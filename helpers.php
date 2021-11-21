@@ -13,12 +13,12 @@ function is_sanitized($name) {
 
 // get file name only
 function get_file_name($file) {
-    $dot_pos = strpos($file, '.' );
+    $dot_pos = strrpos($file, '.' );
     return $dot_pos ? substr($file ,0, $dot_pos) : $file;
 }
 // get extension only
 function get_file_extension($file) {
-    $dot_pos = strpos($file, '.' );
+    $dot_pos = strrpos($file, '.' );
     return $dot_pos ? substr($file , $dot_pos) : null;
 }
 // check if file is txt
@@ -27,6 +27,7 @@ function is_txt($file) {
 }
 // create a folder and add time int if exists already 
 function create_folder_from($file) {
+    $file = sanitize_file_name($file);
     $folder_name = get_file_name($file);
     if(file_exists($folder_name)){ mkdir($folder_name . time() . rand(0,500)); return $folder_name ;}
     mkdir($folder_name); return $folder_name;
@@ -34,7 +35,7 @@ function create_folder_from($file) {
 
 // clean file name ( with extension )
 function sanitize_file_name($file_name){
-    $dot_pos = strpos($file_name, '.' );
+    $dot_pos = strrpos($file_name, '.' );
     $only_name = substr($file_name ,0, $dot_pos);
     $extension = substr($file_name , $dot_pos);
     $only_name_clean = sanitize_name($only_name);
