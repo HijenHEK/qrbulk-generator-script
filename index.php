@@ -4,10 +4,10 @@ use chillerlan\QRCode\QRCode;
 use chillerlan\QRCode\QROptions;
 
 require "./vendor/autoload.php";
-
+require "./helpers.php";
 
 $codes = [
-    "qr value 1",
+    "*qr ;; value 1",
     "qr value 2",
     "qr value 3",
  ];
@@ -22,7 +22,8 @@ $options = new QROptions([
 
 foreach($codes as $code) {
     
-    
+
+
     // invoke a fresh QRCode instance
     $qrcode = new QRCode($options);
     
@@ -33,5 +34,9 @@ foreach($codes as $code) {
     if( !file_exists('results')) {
         mkdir('results');
     }
-    $qrcode->render($code , 'results/'. $code.'.png');
+    // use file name sanitizer helper function 
+
+    $filename = sanitize_name($code);
+
+    $qrcode->render($code , 'results/'. $filename.'.png');
 }
