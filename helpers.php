@@ -57,3 +57,18 @@ function read_from_file(String $file) : array{
     }
     return $array;
 }
+
+function clean_path(String $output_folder , String $filename , String $extenstion)
+{
+    $files = scandir($output_folder);
+    $underscore_pos = strrpos($filename, '_' );
+    $orignal_file_name = $underscore_pos ? substr($filename ,0, $underscore_pos) : $filename;
+    $duplicate_names = preg_grep('/^'.$orignal_file_name.'.*/i',$files); 
+    var_dump($orignal_file_name , $files, $duplicate_names);
+    $duplicate_names_count = count($duplicate_names);
+
+    if(file_exists($output_folder.'/'.  strtolower($orignal_file_name).'.' . $extenstion)) {
+        $filename = $orignal_file_name . '_' . $duplicate_names_count ;
+    }
+    return $output_folder .'/'. $filename.'.' . $extenstion ;
+}

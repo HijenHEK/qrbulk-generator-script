@@ -5,12 +5,12 @@ use chillerlan\QRCode\QROptions;
 
 require "./vendor/autoload.php";
 require "./helpers.php";
-$codes = [
-    "*qr ;; value 1,",
-    "qr value 2",
-    "qr value 3",
- ];
+$codes = ['hello' , 'Hello' , 'heLlo' , 'hellO'];
+$extension = 'png';
 
+
+
+var_dump(count($codes));
 $output_folder  = 'results';
 
 if($argc == 2) {
@@ -30,25 +30,25 @@ if($argc == 2) {
 
 $options = new QROptions([
     'version'    => 5,
-    'outputType' => 'png',
+    'outputType' => $extension,
     'eccLevel'   => QRCode::ECC_L,
 ]);
 
 if( !file_exists($output_folder)) {
     mkdir($output_folder);
 }
+$clean_codes = array_unique($codes);
 
-foreach($codes as $code) {
+foreach($clean_codes as $code) {
     
-
-
     // invoke a fresh QRCode instance
     $qrcode = new QRCode($options);
     
 
     // use file name sanitizer helper function 
 
-    $filename = sanitize_name($code);
+    $filename =  sanitize_name($code);
+    $clean_path = clean_path($output_folder,$filename,$extension) ;
+    $qrcode->render($code , $clean_path);
 
-    $qrcode->render($code , $output_folder.'/'. $filename.'.png');
 }
